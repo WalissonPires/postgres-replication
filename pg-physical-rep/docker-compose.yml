@@ -1,0 +1,43 @@
+version: "3"
+services:
+ pg_master:
+  image: 2hamed/pg_master
+  ports:
+    - 8051:5432
+  volumes:
+   - pg_data1:/var/lib/postgresql/data
+  environment:
+   - POSTGRES_USER=hamed
+   - POSTGRES_PASSWORD=123456
+   - POSTGRES_DB=hamed
+   - PG_REP_USER=rep
+   - PG_REP_PASSWORD=123456
+  networks:
+   default:
+
+ pg_slave:
+  image: 2hamed/pg_slave
+  ports:
+    - 8052:5432
+  volumes:
+   - pg_data2:/var/lib/postgresql/data
+  environment:
+   - POSTGRES_USER=hamed
+   - POSTGRES_PASSWORD=123456
+   - POSTGRES_DB=hamed
+   - PG_REP_USER=rep
+   - PG_REP_PASSWORD=123456
+  networks:
+   default:
+
+ adminer:
+  image: adminer
+  restart: always
+  ports:
+    - 8050:8080
+  networks:
+   default:
+
+volumes:
+ pg_data1:
+ pg_data2:

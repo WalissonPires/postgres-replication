@@ -1,0 +1,58 @@
+version: "3"
+
+services:
+
+  micro1:
+    #image: p404/docker-pglogical
+    build: ./micro1
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=masterkey
+    volumes:
+      - pg_data_m1:/var/lib/postgresql/data
+    networks:
+      default:
+    ports:
+      - "8061:5432"
+
+  micro2:
+    #image: p404/docker-pglogical
+    build: ./micro2
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=masterkey
+    volumes:
+      - pg_data_m2:/var/lib/postgresql/data
+    networks:
+      default:
+    ports:
+      - "8062:5432"
+
+  data-warehouse:
+    #image: p404/docker-pglogical
+    build: ./data-warehouse
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=masterkey
+    volumes:
+      - pg_data_all:/var/lib/postgresql/data
+    networks:
+      default:
+    ports:
+      - "8063:5432"
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8060:8080"
+    networks:
+      default:
+
+networks:
+  default:
+
+volumes:
+  pg_data_m1:
+  pg_data_m2:
+  pg_data_all:
